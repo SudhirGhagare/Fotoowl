@@ -73,5 +73,5 @@ Create a `.env` file in the root directory and add the following:
 ```bash 
 API_KEY=your_api_key_here
 BASE_URL=https://your_api_url_here
-
+```
 Copy `.env.example` → rename it to `.env` → fill with real values.
