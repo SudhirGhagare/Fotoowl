@@ -1,50 +1,68 @@
-# Welcome to your Expo app 👋
+# Fotoowl 
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Fotoowl is a cross-platform photo browsing app built with [Expo](https://expo.dev). It supports smooth scrolling, offline-first access, and efficient memory usage for large image lists.
 
-## Get started
+## 🚀 Setup & Run Instructions
 
-1. Install dependencies
+### Prerequisites
+- Node.js 
+- npm 
+- Expo CLI
+- Xcode (for iOS simulator) / Android Studio (for Android emulator)
+
+### Installation
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/SudhirGhagare/fotoowl.git
+   cd fotoowl
+2. Install Dependencies 
 
    ```bash
-   npm install
-   ```
+   npm install 
+3. Start the app 
 
-2. Start the app
+    ```bash 
+    npx expo start
 
-   ```bash
-   npx expo start
-   ```
+## 🏗 Architecture Overview
 
-In the output, you'll find options to open the app in a
+The app follows a modular architecture with clear separation of concerns:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- **UI Layer:** (app/screens)
+All UI components and screens are organized in the screens folder. Each screen handles presentation logic only and delegates data fetching (using useInfiniteImages.ts hook defined inside app/hooks/useInfiniteImages.ts or persistence to services.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- **Networking Layer:** (app/services/api.ts)
+API calls and remote data fetching are centralized inside api.ts. This ensures a single point for handling base URLs, authentication headers, retries, and error handling.
 
-## Get a fresh project
+- **Storage Layer:** (app/services/storage.ts)
+Local storage (via. AsyncStorage) is abstracted inside storage.ts. This provides a consistent way to cache and retrieve data without tying UI code to the storage mechanism.
 
-When you're ready, run:
+- **Navigation Layer:** (app/navigation.tsx)
+App routing is managed by React Navigation using a stack/tab navigator. Deep linking is supported to open specific screens or resources directly.
 
-```bash
-npm run reset-project
-```
+### 🔄 Data Flow
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+1. **Image Fetching**
 
-## Learn more
+   The ImageGridScreen.tsx screen uses the custom hook useInfiniteImages.ts to fetch and render paginated image data.
 
-To learn more about developing your project with Expo, look at the following resources:
+2. **Networking & Caching**
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+  API requests are handled in services/api.ts using a public REST API.
+Response metadata is cached locally through services/storage.ts (AsyncStorage), enabling offline support.
 
-## Join the community
+3. **Data Delivery to UI**
 
-Join our community of developers creating universal apps.
+  The useInfiniteImages hook returns normalized data to ImageGridScreen.tsx, which displays it in a performant infinite scroll grid.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+4. **Favorites Management**
+
+User interactions (add/remove favorites) are handled within services/storage.ts.
+
+Updates are persisted locally, ensuring that favorite selections remain available across app restarts. 
+
+### ⚖️ Trade-offs
+
+Chose a services-based architecture instead of Redux or Zustand for simplicity. This keeps boilerplate low but may limit complex state sharing in larger apps.
+
+Used React Navigation (battle-tested & community-supported) rather than a custom solution.
