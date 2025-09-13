@@ -13,8 +13,8 @@ Fotoowl is a cross-platform photo browsing app built with [Expo](https://expo.de
 ### Installation
 1. Clone the repo:
    ```bash
-   git clone https://github.com/SudhirGhagare/fotoowl.git
-   cd fotoowl
+   git clone https://github.com/SudhirGhagare/Fotoowl.git
+   cd Fotoowl
 2. Install Dependencies 
 
    ```bash
