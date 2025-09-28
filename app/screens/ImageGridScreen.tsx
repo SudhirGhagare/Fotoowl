@@ -142,6 +142,7 @@ export default function ImageGridScreen({ route }: any) {
             contentFit="cover"
             cachePolicy={"disk"}
             transition={200}
+            testID="image-item"
           />
         </TouchableOpacity>
 
@@ -155,6 +156,8 @@ export default function ImageGridScreen({ route }: any) {
             borderRadius: 20,
             padding: 4,
           }}
+
+          testID={`favorite-icon-${item.id}`}
         >
           <MaterialIcons
             name={isFavorite ? "favorite" : "favorite-border"}
@@ -200,6 +203,7 @@ export default function ImageGridScreen({ route }: any) {
         }}
       >
         <FlatList
+          testID="flatlist"
           ref={listRef}
           data={items}
           keyExtractor={(i) => i.id}
